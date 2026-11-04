@@ -1,0 +1,33 @@
+name: Build (Windows)  # Сборка WinForms-приложения и снимок главной формы
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Build
+      run: dotnet build TaskPlanner.sln -c Release
+
+    - name: Screenshot of the main form
+      shell: pwsh
+      run: ./.github/scripts/screenshot.ps1 -Exe TaskPlanner/bin/Release/net8.0-windows/TaskPlanner.exe -Out form.png
+
+    - name: Upload screenshot
+      uses: actions/upload-artifact@v4
+      with:
+        name: form-screenshot
+        path: form.png
