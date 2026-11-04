@@ -15,6 +15,7 @@ public static class Win32 {
     [DllImport("user32.dll")] public static extern bool GetWindowRect(IntPtr hWnd, out RECT rect);
     [DllImport("user32.dll")] public static extern bool SetForegroundWindow(IntPtr hWnd);
     [DllImport("user32.dll")] public static extern bool SetProcessDPIAware();
+    [DllImport("dwmapi.dll")] public static extern int DwmGetWindowAttribute(IntPtr hWnd, int attribute, out RECT rect, int size);
 }
 "@
 
@@ -31,8 +32,11 @@ if ($handle -eq [IntPtr]::Zero) { throw "Окно приложения не по
 [Win32]::SetForegroundWindow($handle) | Out-Null
 Start-Sleep -Seconds 2
 
+# Видимая рамка окна без невидимых полей для изменения размера (DWMWA_EXTENDED_FRAME_BOUNDS = 9).
 $rect = New-Object Win32+RECT
-[Win32]::GetWindowRect($handle, [ref]$rect) | Out-Null
+if ([Win32]::DwmGetWindowAttribute($handle, 9, [ref]$rect, 16) -ne 0) {
+    [Win32]::GetWindowRect($handle, [ref]$rect) | Out-Null
+}
 $width = $rect.Right - $rect.Left
 $height = $rect.Bottom - $rect.Top
 $bitmap = New-Object System.Drawing.Bitmap $width, $height

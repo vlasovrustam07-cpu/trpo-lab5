@@ -27,7 +27,7 @@ jobs:
       run: ./.github/scripts/screenshot.ps1 -Exe TaskPlanner/bin/Release/net8.0-windows/TaskPlanner.exe -Out form.png
 
     - name: Upload screenshot
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       with:
         name: form-screenshot
         path: form.png
