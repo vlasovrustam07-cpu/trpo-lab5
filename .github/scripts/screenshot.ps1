@@ -43,3 +43,11 @@ $graphics.Dispose()
 $bitmap.Dispose()
 Stop-Process -Id $process.Id -Force
 Write-Host "Снимок окна ${width}x${height} сохранён в $Out"
+
+# Дублируем снимок в лог в виде base64, чтобы его можно было получить и без скачивания артефакта.
+$base64 = [Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Resolve-Path $Out)))
+Write-Host "PNG_BASE64_BEGIN"
+for ($pos = 0; $pos -lt $base64.Length; $pos += 1000) {
+    Write-Host $base64.Substring($pos, [Math]::Min(1000, $base64.Length - $pos))
+}
+Write-Host "PNG_BASE64_END"
