@@ -26,6 +26,9 @@ namespace TaskPlanner
             AddSampleTasks();
             RefreshList();
             ResizeTitleColumn();
+
+            // Фокус на списке, чтобы в пустом поле ввода была видна подсказка «Что нужно сделать?».
+            ActiveControl = lvTasks;
         }
 
         protected override void OnFormClosed(FormClosedEventArgs e)

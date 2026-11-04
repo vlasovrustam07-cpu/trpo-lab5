@@ -264,7 +264,7 @@ namespace TaskPlanner
             // Form1
             // 
             AcceptButton = btnAdd;
-            AutoScaleDimensions = new SizeF(8F, 19F);
+            AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(244, 246, 250);
             ClientSize = new Size(720, 500);
